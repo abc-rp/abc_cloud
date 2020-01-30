@@ -1,2 +1,6 @@
+[all:vars]
+ansible_connection=ssh
+ansible_user=abc
+
 [master]
-192.168.122.236
+192.168.122.92

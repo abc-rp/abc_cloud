@@ -1,8 +1,8 @@
 ---
-# - import_playbook: "./prerequisites.yml"
-# - import_playbook: "./k3s.yml"
-# - import_playbook: "./user.yaml"
-- import_playbook: "./install_grafana.yml"
-# - import_playbook: "./install_mq_broker.yml"
+# - import_playbook: "./install_grafana.yml"
 # - import_playbook: "./install_influxdb.yml"
-
+# - import_playbook: "./install_mq_broker.yml"
+- import_playbook: "./install_services.yml"
+# - import_playbook: "./k3s.yml"
+# - import_playbook: "./prerequisites.yml"
+# - import_playbook: "./user.yaml"

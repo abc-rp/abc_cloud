@@ -11,3 +11,6 @@ These include:
 - TICK Stack
 
 We will initially target Google Kubernetes Engine (GKE) and k3s.
+
+    ansible-playbook --ask-pass -i inventories/abc.template playbooks/install.yml
+

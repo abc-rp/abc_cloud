@@ -1,12 +1,16 @@
 ---
-- name: Set eval_app_host var
-  set_fact:
-    eval_app_host: "{{ hostvars['EVAL_VARS']['eval_app_host'] }}"
-
-- name: Install Gitea
-  include_role:
-    name: gitea
-  vars:
-    gitea_route_suffix: "{{ eval_app_host }}"
-  tags: ["gitea"]
-  when: gitea
+  - hosts: localhost
+    gather_facts: true
+    tasks:
+      - name: Set eval_app_host var
+        set_fact:
+          eval_app_host: k3s
+          # eval_app_host: "{{ hostvars['EVAL_VARS']['eval_app_host'] }}"
+          
+      - name: Install Gitea
+        include_role:
+          name: gitea
+        vars:
+          gitea_route_suffix: "{{ eval_app_host }}"
+        tags: ["gitea"]
+        when: gitea
