@@ -6,7 +6,6 @@
         set_fact:
           eval_app_host: k3s
           # eval_app_host: "{{ hostvars['EVAL_VARS']['eval_app_host'] }}"
-          
       - name: Install Gitea
         include_role:
           name: gitea

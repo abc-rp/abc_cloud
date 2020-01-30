@@ -12,5 +12,9 @@ These include:
 
 We will initially target Google Kubernetes Engine (GKE) and k3s.
 
-    ansible-playbook --ask-pass -i inventories/abc.template playbooks/install.yml
+    sudo -i
+    apt install ansible
+    git clone https://github.com/active-building-centre/installation.git
+    cd installation
+    ansible-playbook -i inventories/abc.template playbooks/install.yml
 
