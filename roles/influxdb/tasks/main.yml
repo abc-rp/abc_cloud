@@ -1,0 +1,73 @@
+---
+# SETUP INFLUXDB
+- name: Create InfluxDB namespace
+  shell: kubectl create namespace {{ influxdb_namespace }}
+  register: influxdb_create_namespace_cmd
+  failed_when: influxdb_create_namespace_cmd.stderr != '' and 'AlreadyExists' not in influxdb_create_namespace_cmd.stderr
+
+- name: Set context to InfluxDB namespace
+  shell: kubectl config set-context $(kubectl config current-context) --namespace={{ influxdb_namespace }}
+
+- name: Create InfluxDB GCP storage class
+  shell: kubectl apply -f "{{ influxdb_operator_resources }}/gcp_storageclass.yaml"
+  when: cluster_type == "gke"
+
+- name: Copy Local Path StorageClass to host
+  copy:
+    src: local_path_storagecalss.yml
+    dest: /tmp/local_path_storagecalss.yml
+  when: cluster_type == "k3s"
+
+- name: Create InfluxDB storage class
+  shell: kubectl apply -f /tmp/local_path_storagecalss.yml
+  when: cluster_type == "k3s"
+
+- name: Create InfluxDB Operator Resources
+  shell: "kubectl apply -f {{ item }} -n {{ influxdb_namespace }}"
+  with_items: "{{ influxdb_operator_resource_items }}"
+  register: create_influxdb_operator_resource_cmd
+  failed_when: create_influxdb_operator_resource_cmd.stderr != '' and 'AlreadyExists' not in create_influxdb_operator_resource_cmd.stderr
+
+- name: Generate InfluxDB operator resource
+  template:
+    src: "influxdb-operator.yml.j2"
+    dest: /tmp/influxdb-operator.yml
+
+- name: Create InfluxDB operator resource
+  shell: kubectl apply -f /tmp/influxdb-operator.yml -n {{ influxdb_namespace }}
+  register: create_influxdb_operator_cmd
+  failed_when: create_influxdb_operator_cmd.stderr != '' and 'AlreadyExists' not in create_influxdb_operator_cmd.stderr
+  changed_when: create_influxdb_operator_cmd.rc == 0
+
+- name: Generate InfluxDB config map
+  template:
+    src: "influxdb-configmap.yml.j2"
+    dest: /tmp/influxdb-configmap.yml
+
+- name: Create InfluxDB operator resource
+  shell: kubectl apply -f /tmp/influxdb-configmap.yml -n {{ influxdb_namespace }}
+  register: create_influxdb_configmap_cmd
+  failed_when: create_influxdb_configmap_cmd.stderr != '' and 'AlreadyExists' not in create_influxdb_configmap_cmd.stderr
+  changed_when: create_influxdb_configmap_cmd.rc == 0
+
+- name: Generate InfluxDB resource
+  template:
+    src: "influxdb-cr.yml.j2"
+    dest: /tmp/influxdb-cr.yml
+
+- name: Create InfluxDB operator resource
+  shell: kubectl apply -f /tmp/influxdb-cr.yml -n {{ influxdb_namespace }}
+  register: create_influxdb_custom_resource_cmd
+  failed_when: create_influxdb_custom_resource_cmd.stderr != '' and 'AlreadyExists' not in create_influxdb_custom_resource_cmd.stderr
+  changed_when: create_influxdb_custom_resource_cmd.rc == 0
+
+- name: "Wait for InfluxDB pods to be ready"
+  shell: "kubectl get pods -n {{ influxdb_namespace }} --selector='app=influxdb' -o jsonpath='{.items[*].status.containerStatuses[?(@.ready==true)].ready}' | wc -w"
+  register: influxdb_result
+  until: influxdb_result.stdout.find("1") != -1
+  retries: 90
+  delay: 5
+
+- name: Open InfluxDB ports with a LoadBalancer
+  shell: |
+    kubectl patch svc influxdb-svc -n {{ influxdb_namespace }} --patch '{"spec": {"type": "LoadBalancer"}}'

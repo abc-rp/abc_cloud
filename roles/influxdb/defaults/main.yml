@@ -1,0 +1,14 @@
+influxdb_namespace: influxdb
+
+influxdb_operator_resource_items:
+  - "{{ influxdb_operator_resources }}/service_account.yaml"
+  - "{{ influxdb_operator_resources }}/role.yaml"
+  - "{{ influxdb_operator_resources }}/role_binding.yaml"
+  - "{{ influxdb_operator_resources }}/crds/influxdata_v1alpha1_influxdb_crd.yaml"
+  - "{{ influxdb_operator_resources }}/crds/influxdata_v1alpha1_backup_crd.yaml"
+  - "{{ influxdb_operator_resources }}/crds/influxdata_v1alpha1_restore_crd.yaml"
+  # - "{{ influxdb_operator_resources }}/operator.yaml"
+
+# influxdb_admin_username: influxdbadmin
+# TODO: set up single sign on with keycloak
+# influxdb_admin_password: Password1

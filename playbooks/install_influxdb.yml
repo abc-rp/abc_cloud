@@ -1,0 +1,5 @@
+---
+- hosts: localhost
+  roles:
+    - role: influxdb
+      when: influxdb | default(true) | bool

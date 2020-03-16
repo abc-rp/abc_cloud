@@ -1,0 +1,27 @@
+---
+apiVersion: influxdata.com/v1alpha1
+kind: Influxdb
+metadata:
+  name: influxdb
+spec:
+  # Add fields here
+  size: 1
+  baseImage: influxdb:{{ influxdb_version }}-alpine
+  imagePullPolicy: Always
+  pod:
+    resources:
+      limits:
+        cpu: 8
+        memory: 16Gi
+      requests:
+        cpu: 0.1
+        memory: 256Mi
+    persistentVolumeClaim:
+      metadata:
+        name: "influxdb-data-pvc"
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: standard-resize
+        resources:
+          requests:
+            storage: 8Gi
