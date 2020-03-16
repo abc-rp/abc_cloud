@@ -1,0 +1,2 @@
+---
+hono_namespace: "{{ eval_hono_namespace | default('hono')}}"

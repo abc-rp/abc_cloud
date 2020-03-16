@@ -1,0 +1,15 @@
+---
+# SETUP HONO using Helm
+# TODO: replace with enmasse operator
+
+- name: Create Hono namespace
+  shell: kubectl create namespace {{ hono_namespace }}
+  register: hono_create_namespace_cmd
+  failed_when: hono_create_namespace_cmd.stderr != '' and 'AlreadyExists' not in hono_create_namespace_cmd.stderr
+
+- name: Set context to InfluxDB namespace
+  shell: kubectl config set-context $(kubectl config current-context) --namespace={{ hono_namespace }}
+
+- name: Install hono using Helm
+  shell: |
+    helm install --dependency-update -n hono eclipse-hono eclipse-iot/hono
