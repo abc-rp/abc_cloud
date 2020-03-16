@@ -1,0 +1,11 @@
+---
+abc_cloud_version: master
+
+# influxdb
+influxdb: True
+influxdb_version: "1.7.10"
+# swap from master to release version on first release
+influxdb_operator_release_tag: "master"
+influxdb_operator_resources: "https://raw.githubusercontent.com/influxdata/influxdata-operator/{{ influxdb_operator_release_tag }}/deploy"
+# custom build for abc swap to official when released or set up CI/CD to auto build updates
+influxdb_operator_build_image: "gcr.io/sodium-apex-265111/influxdb-operator"
