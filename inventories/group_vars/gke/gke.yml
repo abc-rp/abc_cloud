@@ -1,0 +1,9 @@
+---
+# Ansible configurations
+ansible_connection: local
+
+# backup_restore_install decides whether to run and install the backup and restore features
+backup_restore_install: True
+
+# Setting cluster type
+cluster_type: gke
