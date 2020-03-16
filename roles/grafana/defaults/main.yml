@@ -1,0 +1,15 @@
+grafana_namespace: grafana
+
+grafana_operator_resource_items:
+  - "{{ grafana_operator_resources }}/service_account.yaml"
+  - "{{ grafana_operator_resources }}/role.yaml"
+  - "{{ grafana_operator_resources }}/role_binding.yaml"
+  - "{{ grafana_operator_resources }}/crds/crd.yaml"
+  - "{{ grafana_operator_resources }}/operator.yaml"
+
+webapp_namespace: "{{ eval_webapp_namespace | default('webapp') }}"
+grafana_admin_username: grafanaadmin
+grafana_admin_token: admintoken
+grafana_admin_password: Password1
+
+grafana_prometheusrule_name: grafana-prometheusrule
