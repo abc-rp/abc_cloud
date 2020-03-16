@@ -1,2 +1,14 @@
 ---
 app_host: abc.re.je
+
+ns_prefix: ''
+
+eval_enmasse_namespace: "{{ ns_prefix | default('')}}enmasse"
+eval_grafana_namespace: "{{ ns_prefix | default('')}}grafana"
+eval_influxdb_namespace: "{{ ns_prefix | default('')}}influxdb"
+
+aws_s3_backup_secret_name: 's3-credentials'
+
+backup_s3_aws_access_key: ""
+backup_s3_aws_secret_key: ""
+backup_s3_aws_bucket: ""
