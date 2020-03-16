@@ -7,9 +7,9 @@
   register: hono_create_namespace_cmd
   failed_when: hono_create_namespace_cmd.stderr != '' and 'AlreadyExists' not in hono_create_namespace_cmd.stderr
 
-- name: Set context to InfluxDB namespace
+- name: Set context to Hono namespace
   shell: kubectl config set-context $(kubectl config current-context) --namespace={{ hono_namespace }}
 
-- name: Install hono using Helm
+- name: Install Hono using Helm
   shell: |
     helm install --dependency-update -n hono eclipse-hono eclipse-iot/hono --version {{ hono_version }}
