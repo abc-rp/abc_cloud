@@ -1,4 +1,4 @@
-influxdb_namespace: influxdb
+influxdb_namespace: "{{ eval_influxdb_namespace | default('influxdb')}}"
 
 influxdb_operator_resource_items:
   - "{{ influxdb_operator_resources }}/service_account.yaml"

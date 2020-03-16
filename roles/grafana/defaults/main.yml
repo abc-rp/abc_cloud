@@ -1,4 +1,4 @@
-grafana_namespace: grafana
+grafana_namespace: "{{ eval_grafana_namespace | default('grafana')}}"
 
 grafana_operator_resource_items:
   - "{{ grafana_operator_resources }}/crds/Grafana.yaml"
