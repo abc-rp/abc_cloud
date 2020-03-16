@@ -1,0 +1,5 @@
+---
+- hosts: localhost
+  roles:
+    - role: hono
+      when: hono | default(true) | bool

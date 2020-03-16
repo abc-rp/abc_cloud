@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hono-influxdb-connector
+  namespace: hono
+  labels:
+    app: hono-influxdb-connector
+    version: "<VERSION>"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hono-influxdb-connector
+  template:
+    metadata:
+      labels:
+        app: hono-influxdb-connector
+        version: "<VERSION>"
+    spec:
+      containers:
+      - image: <DOCKER_IMAGE>:<DOCKER_VERSION>
+        imagePullPolicy: Always
+        name: hono-influxdb-connector
+        envFrom:
+        - configMapRef:
+            name: hono-influxdb-connector-configmap
+        - secretRef:
+            name: hono-influxdb-connector-secret
+        volumeMounts:
+        - mountPath: /etc/hono
+          name: config
+          readOnly: true
+      volumes:
+      - name: config
+        secret:
+          secretName: hono-influxdb-connector-conf
+      imagePullSecrets:
+      - name: docker-secret

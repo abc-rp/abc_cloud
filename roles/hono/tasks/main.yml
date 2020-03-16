@@ -12,4 +12,4 @@
 
 - name: Install hono using Helm
   shell: |
-    helm install --dependency-update -n hono eclipse-hono eclipse-iot/hono
+    helm install --dependency-update -n hono eclipse-hono eclipse-iot/hono --version {{ hono_version }}

@@ -1,0 +1,5 @@
+---
+- hosts: localhost
+  roles:
+    - role: hono_influxdb_connector
+      when: connector | default(true) | bool
