@@ -14,3 +14,8 @@ influxdb_operator_build_image: "gcr.io/sodium-apex-265111/influxdb-operator"
 grafana: True
 grafana_operator_release_tag: "v3.1.0"
 grafana_operator_resources: "https://raw.githubusercontent.com/integr8ly/grafana-operator/{{ grafana_operator_release_tag }}/deploy"
+
+# enmasse
+enmasse: True
+enmasse_version: '1.3.2'
+enmasse_git_url: https://github.com/jboss-container-images/amq-online-images.git
