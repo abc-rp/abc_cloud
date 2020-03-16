@@ -7,13 +7,12 @@
 
 - name: Make sure we are using the Grafana namespace
   shell: "kubectl config set-context --current --namespace={{ grafana_namespace }}"
-  become: yes
 
 - name: Create Grafana Operator Resources
   shell: "kubectl create -f {{ item }} -n {{ grafana_namespace }}"
-  with_items: "{{ gitea_operator_resource_items }}"
-  register: create_gitea_operator_resource_cmd
-  failed_when: create_gitea_operator_resource_cmd.stderr != '' and 'AlreadyExists' not in create_gitea_operator_resource_cmd.stderr
+  with_items: "{{ grafana_operator_resource_items }}"
+  register: create_grafana_operator_resource_cmd
+  failed_when: create_grafana_operator_resource_cmd.stderr != '' and 'AlreadyExists' not in create_grafana_operator_resource_cmd.stderr
 
 - name: Generate Grafana custom resource template
   template:
@@ -25,3 +24,14 @@
   register: create_grafana_custom_resource_cmd
   failed_when: create_grafana_custom_resource_cmd.stderr != '' and 'AlreadyExists' not in create_grafana_custom_resource_cmd.stderr
   changed_when: create_grafana_custom_resource_cmd.rc == 0
+
+- name: Generate Grafana date source custom resource template
+  template:
+    src: "grafana-datasource_cr.yml.j2"
+    dest: /tmp/grafana-datasource_cr.yml
+
+- name: Create Grafana custom resource
+  shell: kubectl create -f /tmp/grafana-cr.yml -n {{ grafana_namespace }}
+  register: create_grafana_datasource_cr_cmd
+  failed_when: create_grafana_datasource_cr_cmd.stderr != '' and 'AlreadyExists' not in create_grafana_datasource_cr_cmd.stderr
+  changed_when: create_grafana_datasource_cr_cmd.rc == 0

@@ -12,8 +12,6 @@ These include:
 
 We will initially target Google Kubernetes Engine (GKE) and k3s.
 
-    sudo -i
-    apt install ansible
     git clone https://github.com/active-building-centre/installation.git
     cd installation
 

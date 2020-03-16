@@ -68,6 +68,7 @@
   retries: 90
   delay: 5
 
+  # TODO: remove this line as it should only be used by telegraph and grafana on cluster?
 - name: Open InfluxDB ports with a LoadBalancer
   shell: |
     kubectl patch svc influxdb-svc -n {{ influxdb_namespace }} --patch '{"spec": {"type": "LoadBalancer"}}'

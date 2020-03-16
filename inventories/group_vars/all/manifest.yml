@@ -9,3 +9,8 @@ influxdb_operator_release_tag: "master"
 influxdb_operator_resources: "https://raw.githubusercontent.com/influxdata/influxdata-operator/{{ influxdb_operator_release_tag }}/deploy"
 # custom build for abc swap to official when released or set up CI/CD to auto build updates
 influxdb_operator_build_image: "gcr.io/sodium-apex-265111/influxdb-operator"
+
+# grafana
+grafana: True
+grafana_operator_release_tag: "v3.1.0"
+grafana_operator_resources: "https://raw.githubusercontent.com/integr8ly/grafana-operator/{{ grafana_operator_release_tag }}/deploy"

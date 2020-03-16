@@ -1,6 +1,7 @@
 ---
 - hosts: localhost
-  gather_facts: no
   roles:
     - role: grafana
       when: grafana | default(true) | bool
+  vars:
+    grafana_route_suffix: "{{ app_host }}"
