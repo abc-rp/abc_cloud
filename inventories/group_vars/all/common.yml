@@ -6,6 +6,7 @@ ns_prefix: ''
 eval_enmasse_namespace: "{{ ns_prefix | default('')}}enmasse"
 eval_grafana_namespace: "{{ ns_prefix | default('')}}grafana"
 eval_influxdb_namespace: "{{ ns_prefix | default('')}}influxdb"
+eval_hono_namespace: "{{ ns_prefix | default('')}}hono"
 
 aws_s3_backup_secret_name: 's3-credentials'
 

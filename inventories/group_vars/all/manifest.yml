@@ -18,12 +18,13 @@ grafana_operator_resources: "https://raw.githubusercontent.com/integr8ly/grafana
 
 # hono (Helm)
 hono: True
-hono_version: "v1.1.5"
+hono_chart_version: "v1.1.5"
 
 # hono_influxdb_connector
 connector: True
-connector_release_tag: "master"
-# connector_operator_build_image: docker.io
+# TODO: Swap to release when fixes are tagged
+connector_release_tag: "036c28f"
+connector_build_image: "gcr.io/sodium-apex-265111/hono-influxdb-connector"
 
 # # enmasse
 # enmasse: True
