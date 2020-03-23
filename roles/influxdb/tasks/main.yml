@@ -33,7 +33,7 @@
     src: "influxdb-operator.yml.j2"
     dest: /tmp/influxdb-operator.yml
 
-- name: Create InfluxDB operator resource
+- name: Create InfluxDB Operator Resource
   shell: kubectl apply -f /tmp/influxdb-operator.yml -n {{ influxdb_namespace }}
   register: create_influxdb_operator_cmd
   failed_when: create_influxdb_operator_cmd.stderr != '' and 'AlreadyExists' not in create_influxdb_operator_cmd.stderr
@@ -44,7 +44,7 @@
     src: "influxdb-configmap.yml.j2"
     dest: /tmp/influxdb-configmap.yml
 
-- name: Create InfluxDB operator resource
+- name: Create InfluxDB config map
   shell: kubectl apply -f /tmp/influxdb-configmap.yml -n {{ influxdb_namespace }}
   register: create_influxdb_configmap_cmd
   failed_when: create_influxdb_configmap_cmd.stderr != '' and 'AlreadyExists' not in create_influxdb_configmap_cmd.stderr
@@ -68,7 +68,6 @@
   retries: 90
   delay: 5
 
-  # TODO: remove this line as it should only be used by telegraph and grafana on cluster?
-- name: Open InfluxDB ports with a LoadBalancer
+- name: Create InfluxDB devices database
   shell: |
-    kubectl patch svc influxdb-svc -n {{ influxdb_namespace }} --patch '{"spec": {"type": "LoadBalancer"}}'
+    kubectl exec -it "influxdb-0" --namespace {{ influxdb_namespace }} -- influx -host localhost -port 8086 -execute 'CREATE DATABASE devices'
