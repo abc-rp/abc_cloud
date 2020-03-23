@@ -3,12 +3,11 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: hono-influxdb-connector-configmap
-  namespace: hono
 data:
-  HONO_CONNECTIONS_0_TENANTID: 5655e22d-c515-45db-baad-3455e0fab971
+  HONO_CONNECTIONS_0_TENANTID: DEFAULT_TENANT
   HONO_CONNECTIONS_0_INFLUXDATABASENAME: devices
   INFLUXDB_URL: http://influxdb-svc.influxdb:8086
   QPID_ROUTER_HOST: hono-dispatch-router-ext.hono
   QPID_ROUTER_PORT: "15671"
-  {# HONO_TRUSTEDSTOREPATH: /etc/hono/trusted-certs.pem #}
+  HONO_TRUSTEDSTOREPATH: /etc/hono/trusted-certs.pem
   HONO_VERIFYHOSTNAME: "false"

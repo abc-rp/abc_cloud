@@ -1,0 +1,2 @@
+---
+connector_namespace: "{{ eval_connector_namespace | default('connector')}}"

@@ -1,1 +1,50 @@
 ---
+# SETUP HONO_INFLUXDB_CONNECTOR
+- name: Create connector namespace
+  shell: kubectl create namespace {{ connector_namespace }}
+  register: connector_create_namespace_cmd
+  failed_when: connector_create_namespace_cmd.stderr != '' and 'AlreadyExists' not in connector_create_namespace_cmd.stderr
+
+- name: Set context to connector namespace
+  shell: kubectl config set-context $(kubectl config current-context) --namespace={{ connector_namespace }}
+
+- name: Copy trust store certificate to host
+  copy:
+    src: trusted-certs.pem
+    dest: /tmp/trusted-certs.pem
+
+- name: Create configuration secret
+  shell: kubectl create secret generic hono-influxdb-connector-conf --from-file=trusted-certs.pem=/tmp/trusted-certs.pem --namespace {{ connector_namespace }}
+
+- name: Generate connector config map
+  template:
+    src: "connector_configmap.yml.j2"
+    dest: /tmp/connector_configmap.yml
+
+- name: Create connector config map
+  shell: kubectl apply -f /tmp/connector_configmap.yml -n {{ connector_namespace }}
+  register: create_connector_configmap_cmd
+  failed_when: create_connector_configmap_cmd.stderr != '' and 'AlreadyExists' not in create_connector_configmap_cmd.stderr
+  changed_when: create_connector_configmap_cmd.rc == 0
+
+- name: Generate connector secret
+  template:
+    src: "connector_secret.yml.j2"
+    dest: /tmp/connector_secret.yml
+
+- name: Create connector secret
+  shell: kubectl apply -f /tmp/connector_secret.yml -n {{ connector_namespace }}
+  register: create_connector_configmap_cmd
+  failed_when: create_connector_configmap_cmd.stderr != '' and 'AlreadyExists' not in create_connector_configmap_cmd.stderr
+  changed_when: create_connector_configmap_cmd.rc == 0
+
+- name: Generate connector deployment
+  template:
+    src: "connector_deployment.yml.j2"
+    dest: /tmp/connector_deployment.yml
+
+- name: Create connector deployment
+  shell: kubectl apply -f /tmp/connector_deployment.yml -n {{ connector_namespace }}
+  register: create_connector_configmap_cmd
+  failed_when: create_connector_configmap_cmd.stderr != '' and 'AlreadyExists' not in create_connector_configmap_cmd.stderr
+  changed_when: create_connector_configmap_cmd.rc == 0

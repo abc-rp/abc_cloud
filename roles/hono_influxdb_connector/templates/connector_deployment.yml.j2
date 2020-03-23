@@ -3,10 +3,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hono-influxdb-connector
-  namespace: {{ hono_namespace }}
   labels:
     app: hono-influxdb-connector
-    version: "{{ connector_release_tag }}"
+    version: {{ connector_release_tag }}
 spec:
   replicas: 1
   selector:
@@ -16,7 +15,7 @@ spec:
     metadata:
       labels:
         app: hono-influxdb-connector
-        version: "{{ connector_release_tag }}"
+        version: {{ connector_release_tag }}
     spec:
       containers:
       - image: {{ connector_build_image }}:{{ connector_release_tag }}
