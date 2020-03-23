@@ -18,7 +18,7 @@ grafana_operator_resources: "https://raw.githubusercontent.com/integr8ly/grafana
 
 # hono (Helm)
 hono: True
-hono_chart_version: "v1.1.5"
+hono_chart_version: "v1.3.0"
 
 # hono_influxdb_connector
 connector: True
