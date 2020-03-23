@@ -10,6 +10,12 @@
 - name: Set context to Hono namespace
   shell: kubectl config set-context $(kubectl config current-context) --namespace={{ hono_namespace }}
 
+- name: Add the Eclipse IoT repository
+  shell: helm repo add eclipse-iot https://eclipse.org/packages/charts
+
+- name: Update helm repos
+  shell: helm repo update
+
 - name: Install Hono using Helm
   shell: |
-    helm install --dependency-update -n {{ hono_namespace }} --set prometheus.createInstance=false --set grafana.enabled=false hono eclipse-iot/hono --version {{ hono_chart_version }}
+    helm install --dependency-update -n {{ hono_namespace }} --set adapters.amqp.enabled=false --set prometheus.createInstance=false --set grafana.enabled=false hono eclipse-iot/hono --version {{ hono_chart_version }}
