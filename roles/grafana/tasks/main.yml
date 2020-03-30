@@ -31,7 +31,7 @@
     dest: /tmp/grafana-datasource_cr.yml
 
 - name: Create Grafana custom resource
-  shell: kubectl create -f /tmp/grafana-cr.yml -n {{ grafana_namespace }}
+  shell: kubectl create -f /tmp/grafana-datasource_cr.yml -n {{ grafana_namespace }}
   register: create_grafana_datasource_cr_cmd
   failed_when: create_grafana_datasource_cr_cmd.stderr != '' and 'AlreadyExists' not in create_grafana_datasource_cr_cmd.stderr
   changed_when: create_grafana_datasource_cr_cmd.rc == 0
