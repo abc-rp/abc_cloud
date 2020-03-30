@@ -3,18 +3,18 @@ kind: GrafanaDataSource
 metadata:
   name: influxdb-grafanadatasource
 spec:
-  name: pv_data.yaml
+  name: devices_data.yaml
   datasources:
     - name: InfluxDB
       type: influxdb
-      url: http://influxdb-0.influxdb:8086
+      url: http://influxdb-svc.influxdb:8086
       isDefault: true
       access: proxy
-      withCredentials: true
-      basicAuth: true
-      basicAuthUser: admin
-      basicAuthPassword: <db_password>
-      database: pv_data
+      # withCredentials: true
+      # basicAuth: true
+      # basicAuthUser: admin
+      # basicAuthPassword: <db_password>
+      database: devices
       jsonData:
         tlsSkipVerify: true
         timeInterval: 15s
