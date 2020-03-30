@@ -5,6 +5,7 @@ metadata:
 spec:
   ingress:
     enabled: True
+    hostname: {{ grafana_namespace }}.{{ grafana_route_suffix }}
   config:
     log:
       mode: "console"
@@ -18,8 +19,8 @@ spec:
     auth.anonymous:
       enabled: True
 {% if cluster_type == "gke" %}
-    service:
-      type: NodePort
+  service:
+    type: NodePort
 {% endif %}
   dashboardLabelSelector:
     - matchExpressions:
