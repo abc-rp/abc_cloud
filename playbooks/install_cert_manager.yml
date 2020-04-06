@@ -1,0 +1,5 @@
+---
+- hosts: localhost
+  roles:
+    - role: cert_manager
+      when: cert_manager | default(true) | bool

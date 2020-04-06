@@ -1,4 +1,5 @@
 ---
+- import_playbook: "./install_cert_manager.yml"
 - import_playbook: "./install_influxdb.yml"
 - import_playbook: "./install_grafana.yml"
 - import_playbook: "./install_hono.yml"

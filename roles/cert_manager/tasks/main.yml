@@ -1,0 +1,12 @@
+---
+# SETUP CERT MANAGER
+
+# By default, cert-manager will be installed into the cert-manager namespace.
+# It is possible to run cert-manager in a different namespace, although you will need to make modifications to the deployment manifests.
+
+# - name: Elevate privileges to that of a cluster-admin when using gke
+#   shell: kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value core/account)
+#   when: cluster_type == "gke"
+
+- name: Create cert-manager Custom Resources
+  shell: kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/{{ cert_manager_version }}/cert-manager.yaml
