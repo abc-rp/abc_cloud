@@ -24,3 +24,6 @@ If running on GKE:
     ansible-playbook -i inventories/gke.template playbooks/install.yml
 
 These playbooks are tested on Kubernetes 1.15+ and if using cert-manager this is a dependency.
+
+![system diagram](https://docs.google.com/drawings/d/e/2PACX-1vTZfKZIDEEScdSg60ew5PWjDPDEjWVbA5djhbiDbJDMwePXs_LW_7SpuPlONS42hevcjGfNuIhYbswT/pub?w=1229&h=686 "System Diagram")
+
