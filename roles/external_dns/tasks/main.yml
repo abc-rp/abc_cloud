@@ -1,0 +1,15 @@
+---
+# TODO: move to its own namespace
+- name: Make sure we are using the Default namespace
+  shell: "kubectl config set-context --current --namespace=default"
+
+- name: Generate ExternalDNS bundle
+  template:
+    src: "external-dns.yml.j2"
+    dest: /tmp/external-dns.yml
+
+- name: Create ExternalDNS bundle
+  shell: kubectl create -f /tmp/external-dns.yml -n {{ grafana_namespace }}
+  register: create_external_dns_bundle_cmd
+  failed_when: create_external_dns_bundle_cmd.stderr != '' and 'AlreadyExists' not in create_external_dns_bundle_cmd.stderr
+  changed_when: create_external_dns_bundle_cmd.rc == 0

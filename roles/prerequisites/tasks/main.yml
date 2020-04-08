@@ -1,0 +1,5 @@
+---
+# Used by cert_manager, camel_k and external_dns
+- name: Elevate privileges to that of a cluster-admin
+  shell: kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value core/account)
+  when: cluster_type == "gke"

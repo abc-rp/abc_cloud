@@ -1,0 +1,5 @@
+---
+- hosts: localhost
+  roles:
+    - role: external_dns
+      when: external_dns | default(true) | bool

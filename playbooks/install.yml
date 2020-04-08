@@ -1,8 +1,9 @@
 ---
+- import_playbook: "./prerequisites.yml"
+- import_playbook: "./install_external_dns.yml"
 - import_playbook: "./install_cert_manager.yml"
 - import_playbook: "./install_influxdb.yml"
 - import_playbook: "./install_grafana.yml"
 - import_playbook: "./install_hono.yml"
 - import_playbook: "./install_connector.yml"
-# - import_playbook: "./prerequisites.yml"
 # - import_playbook: "./user.yaml"
