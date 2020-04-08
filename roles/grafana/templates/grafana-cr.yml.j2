@@ -6,6 +6,10 @@ spec:
   ingress:
     enabled: True
     hostname: {{ grafana_namespace }}.{{ grafana_route_suffix }}
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+    tlsEnabled: true
+    tlsSecretName: grafana-instance-cert
   config:
     log:
       mode: "console"
