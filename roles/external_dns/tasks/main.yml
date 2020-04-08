@@ -9,7 +9,7 @@
     dest: /tmp/external-dns.yml
 
 - name: Create ExternalDNS bundle
-  shell: kubectl create -f /tmp/external-dns.yml -n {{ grafana_namespace }}
+  shell: kubectl create -f /tmp/external-dns.yml
   register: create_external_dns_bundle_cmd
   failed_when: create_external_dns_bundle_cmd.stderr != '' and 'AlreadyExists' not in create_external_dns_bundle_cmd.stderr
   changed_when: create_external_dns_bundle_cmd.rc == 0

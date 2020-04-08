@@ -11,9 +11,20 @@
 
 - name: Create cert-manager bundle
   shell: kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/{{ cert_manager_version }}/cert-manager.yaml
+  register: cert_manager_create_bundle_cmd
+  failed_when: cert_manager_create_bundle_cmd.stderr != '' and 'AlreadyExists' not in cert_manager_create_bundle_cmd.stderr
 
+- name: "Wait for cert-manager-webhook pod to be ready"
+  shell: "kubectl get pods -n {{ cert_manager_namespace }} --selector='app=webhook' -o jsonpath='{.items[*].status.containerStatuses[?(@.ready==true)].ready}' | wc -w"
+  register: webhook_result
+  until: webhook_result.stdout.find("1") != -1
+  retries: 90
+  delay: 5
+  
 - name: Create cert-manager bundle
   shell: kubectl create secret generic clouddns-dns01-solver-svc-acct --from-file={{ dns_admin_secret }} -n {{ cert_manager_namespace }}
+  register: cert_manager_create_secret_cmd
+  failed_when: cert_manager_create_secret_cmd.stderr != '' and 'AlreadyExists' not in cert_manager_create_secret_cmd.stderr
 
 - name: Generate ACME issuer resource
   template:
