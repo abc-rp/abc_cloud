@@ -1,0 +1,21 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt
+spec:
+  acme:
+    email: {{ lets_encrypt_email }}
+{% if lets_encrypt_prod %}
+    server: https://acme-v02.api.letsencrypt.org/directory
+{% else %}
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+{% endif %}
+    privateKeySecretRef:
+      name: letsencrypt-account-key
+    solvers:
+    - dns01:
+        clouddns:
+          project: {{ gke_project }}
+          serviceAccountSecretRef:
+            name: clouddns-dns01-solver-svc-acct
+            key: key.json

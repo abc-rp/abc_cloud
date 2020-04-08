@@ -1,12 +1,27 @@
 ---
 # SETUP CERT MANAGER
 
-# By default, cert-manager will be installed into the cert-manager namespace.
-# It is possible to run cert-manager in a different namespace, although you will need to make modifications to the deployment manifests.
+- name: Create cert-manager namespace
+  shell: kubectl create namespace {{ cert_manager_namespace }}
+  register: cert_manager_create_namespace_cmd
+  failed_when: cert_manager_create_namespace_cmd.stderr != '' and 'AlreadyExists' not in cert_manager_create_namespace_cmd.stderr
 
-# - name: Elevate privileges to that of a cluster-admin when using gke
-#   shell: kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value core/account)
-#   when: cluster_type == "gke"
+- name: Make sure we are using the cert-manager namespace
+  shell: "kubectl config set-context --current --namespace={{ cert_manager_namespace }}"
 
-- name: Create cert-manager Custom Resources
+- name: Create cert-manager bundle
   shell: kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/{{ cert_manager_version }}/cert-manager.yaml
+
+- name: Create cert-manager bundle
+  shell: kubectl create secret generic clouddns-dns01-solver-svc-acct --from-file={{ dns_admin_secret }} -n {{ cert_manager_namespace }}
+
+- name: Generate ACME issuer resource
+  template:
+    src: "acme-issuer.yml.j2"
+    dest: /tmp/acme-issuer.yml
+
+- name: Create ACME issuer resource
+  shell: kubectl create -f /tmp/acme-issuer.yml -n {{ cert_manager_namespace }}
+  register: create_acme_issuer_resource_cmd
+  failed_when: create_acme_issuer_resource_cmd.stderr != '' and 'AlreadyExists' not in create_acme_issuer_resource_cmd.stderr
+  changed_when: create_acme_issuer_resource_cmd.rc == 0

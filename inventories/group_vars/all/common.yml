@@ -14,6 +14,7 @@ working_dir: "{{ lookup('env','PWD') }}"
 
 kaniko_secret: "{{ working_dir }}/kaniko-secret.json"
 dns_admin_secret: "{{ working_dir }}/key.json"
+gke_project: ""
 
 aws_s3_backup_secret_name: 's3-credentials'
 
