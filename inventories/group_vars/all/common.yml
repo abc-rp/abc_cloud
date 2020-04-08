@@ -10,6 +10,10 @@ eval_hono_namespace: "{{ ns_prefix | default('')}}hono"
 eval_connector_namespace: "{{ ns_prefix | default('')}}connector"
 # eval_cert_manager_namespace: "{{ ns_prefix | default('')}}cert-manager"
 
+working_dir: "{{ lookup('env','PWD') }}"
+
+kaniko_secret: "{{ working_dir }}/kaniko-secret.json"
+dns_admin_secret: "{{ working_dir }}/key.json"
 
 aws_s3_backup_secret_name: 's3-credentials'
 
