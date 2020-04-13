@@ -5,3 +5,5 @@ enmasse_operator_resource_items:
   - "/tmp/enmasse-{{ enmasse_version }}/install/components/example-roles"
   - "/tmp/enmasse-{{ enmasse_version }}/install/components/example-plans"
   - "/tmp/enmasse-{{ enmasse_version }}/install/preview-bundles/iot"
+
+enmasse_consumer_password: "{{ admin_password }}"
