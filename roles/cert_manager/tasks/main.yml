@@ -10,7 +10,7 @@
   shell: "kubectl config set-context --current --namespace={{ cert_manager_namespace }}"
 
 - name: Create cert-manager bundle
-  shell: kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/{{ cert_manager_version }}/cert-manager.yaml
+  shell: kubectl create -f https://github.com/jetstack/cert-manager/releases/download/{{ cert_manager_version }}/cert-manager.yaml
   register: cert_manager_create_bundle_cmd
   failed_when: cert_manager_create_bundle_cmd.stderr != '' and 'AlreadyExists' not in cert_manager_create_bundle_cmd.stderr
 
