@@ -55,9 +55,6 @@
   failed_when: create_iot_config_cmd.stderr != '' and 'AlreadyExists' not in create_iot_config_cmd.stderr
   changed_when: create_iot_config_cmd.rc == 0
 
-# - name: Check cluster readiness
-#   import_tasks: check_readiness.yml 
-
 - name: Create project namespace
   shell: kubectl create namespace {{ enmasse_default_project }}
   register: enmasse_create_namespace_cmd
