@@ -1,0 +1,5 @@
+---
+- hosts: localhost
+  roles:
+    - role: enmasse
+      when: enmasse | default(true) | bool

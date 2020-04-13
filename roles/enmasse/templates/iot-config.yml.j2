@@ -1,0 +1,42 @@
+kind: IoTConfig
+apiVersion: iot.enmasse.io/v1alpha1
+metadata:
+  name: default
+spec:
+  interServiceCertificates:
+    secretCertificatesStrategy:
+      caSecretName: iot-service-ca
+      serviceSecretNames:
+        iot-auth-service: iot-auth-service-tls
+        iot-device-registry: iot-device-registry-tls
+        iot-tenant-service: iot-tenant-service-tls
+  services:
+    deviceRegistry:
+      file:
+        numberOfDevicesPerTenant: 100000
+  adapters:
+    mqtt:
+      enabled: true
+      replicas: 1
+      options:
+        tenantIdleTimeout: 30m
+        maxPayloadSize: 2048
+      endpoint:
+        secretNameStrategy:
+          secretName: iot-mqtt-adapter-tls
+    http:
+      enabled: true
+      replicas: 1
+      containers:
+        adapter:
+          resources:
+            limits:
+              memory: 128Mi
+              cpu: 500m
+      endpoint:
+        secretNameStrategy:
+          secretName: iot-http-adapter-tls
+    lorawan:
+      enabled: false
+    sigfox:
+      enabled: false

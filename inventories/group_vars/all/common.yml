@@ -3,7 +3,7 @@ app_host: abc.re.je
 
 ns_prefix: ''
 
-eval_enmasse_namespace: "{{ ns_prefix | default('')}}enmasse"
+eval_enmasse_namespace: "{{ ns_prefix | default('')}}enmasse-infra"
 eval_grafana_namespace: "{{ ns_prefix | default('')}}grafana"
 eval_influxdb_namespace: "{{ ns_prefix | default('')}}influxdb"
 eval_hono_namespace: "{{ ns_prefix | default('')}}hono"

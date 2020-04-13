@@ -1,0 +1,7 @@
+enmasse_namespace: "{{ eval_enmasse_namespace | default('enmasse-infra')}}"
+
+enmasse_operator_resource_items:
+  - "/tmp/enmasse-{{ enmasse_version }}/install/bundles/enmasse"
+  - "/tmp/enmasse-{{ enmasse_version }}/install/components/example-roles"
+  - "/tmp/enmasse-{{ enmasse_version }}/install/components/example-plans"
+  - "/tmp/enmasse-{{ enmasse_version }}/install/preview-bundles/iot"

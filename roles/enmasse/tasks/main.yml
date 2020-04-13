@@ -1,0 +1,92 @@
+---
+# SETUP ENMASSE
+- name: Create Enmasse namespace
+  shell: kubectl create namespace {{ enmasse_namespace }}
+  register: enmasse_create_namespace_cmd
+  failed_when: enmasse_create_namespace_cmd.stderr != '' and 'AlreadyExists' not in enmasse_create_namespace_cmd.stderr
+
+- name: Make sure we are using the Enmasse namespace
+  shell: "kubectl config set-context --current --namespace={{ enmasse_namespace }}"
+
+- name: Generate wildcard certificate template
+  template:
+    src: "wildcard-cert.yml.j2"
+    dest: /tmp/wildcard-cert.yml
+
+- name: Create wildcard certificate resource
+  shell: kubectl create -f /tmp/wildcard-cert.yml -n {{ enmasse_namespace }}
+  register: create_wildcard_cert_resource_cmd
+  failed_when: create_wildcard_cert_resource_cmd.stderr != '' and 'AlreadyExists' not in create_wildcard_cert_resource_cmd.stderr
+  changed_when: create_wildcard_cert_resource_cmd.rc == 0
+
+- name: Download and unarchive enmasse release
+  unarchive:
+    src: "{{ enmasse_release_url }}"
+    dest: /tmp
+    remote_src: yes
+
+- name: Create enmasse Resources
+  shell: "kubectl create -f {{ item }} -n {{ enmasse_namespace }}"
+  with_items: "{{ enmasse_operator_resource_items }}"
+  register: create_enmasse_resource_cmd
+  failed_when: create_enmasse_resource_cmd.stderr != '' and 'AlreadyExists' not in create_enmasse_resource_cmd.stderr
+
+- name: Generate low resource authserver (Keycloak)
+  template:
+    src: "lowresources-authservice.yml.j2"
+    dest: /tmp/lowresources-authservice.yml
+
+- name: Create Grafana custom resource
+  shell: kubectl create -f /tmp/lowresources-authservice.yml -n {{ enmasse_namespace }}
+  register: create_authservice_cmd
+  failed_when: create_authservice_cmd.stderr != '' and 'AlreadyExists' not in create_authservice_cmd.stderr
+  changed_when: create_authservice_cmd.rc == 0
+
+# TODO: create and deploy interServiceCertificates
+
+- name: Generate IoT config
+  template:
+    src: "iot-config.yml.j2"
+    dest: /tmp/iot-config.yml
+
+- name: Create IoT config
+  shell: kubectl create -f /tmp/iot-config.yml -n {{ enmasse_namespace }}
+  register: create_iot_config_cmd
+  failed_when: create_iot_config_cmd.stderr != '' and 'AlreadyExists' not in create_iot_config_cmd.stderr
+  changed_when: create_iot_config_cmd.rc == 0
+
+# - name: Check cluster readiness
+#   import_tasks: check_readiness.yml 
+
+- name: Create project namespace
+  shell: kubectl create namespace {{ enmasse_default_project }}
+  register: enmasse_create_namespace_cmd
+  failed_when: enmasse_create_namespace_cmd.stderr != '' and 'AlreadyExists' not in enmasse_create_namespace_cmd.stderr
+
+- name: Make sure we are using the project namespace
+  shell: "kubectl config set-context --current --namespace={{ enmasse_default_project }}"
+
+- name: Generate IoT project
+  template:
+    src: "iot-project-managed.yml.j2"
+    dest: /tmp/iot-project-managed.yml
+
+- name: Create IoT project
+  shell: kubectl create -f /tmp/iot-project-managed.yml -n {{ enmasse_default_project }}
+  register: create_iot_project_cmd
+  failed_when: create_iot_project_cmd.stderr != '' and 'AlreadyExists' not in create_iot_project_cmd.stderr
+  changed_when: create_iot_project_cmd.rc == 0
+
+# TODO: check readiness again
+# kubectl get addressspace iot && kubectl get iotproject iot
+
+- name: Generate IoT user
+  template:
+    src: "iot-user.yml.j2"
+    dest: /tmp/iot-user.yml.yml
+
+- name: Create IoT user
+  shell: kubectl create -f /tmp/iot-user.yml.yml -n {{ enmasse_default_project }}
+  register: create_iot_user_cmd
+  failed_when: create_iot_user_cmd.stderr != '' and 'AlreadyExists' not in create_iot_user_cmd.stderr
+  changed_when: create_iot_user_cmd.rc == 0

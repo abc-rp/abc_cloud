@@ -1,0 +1,15 @@
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: wildcard-cert
+  namespace: enmasse-infra
+spec:
+  dnsNames:
+    - {{ app_host }}
+    - "*.{{ app_host }}"
+  secretName: wildcard-cert-tls
+  commonName: "*.{{ app_host }}"
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
