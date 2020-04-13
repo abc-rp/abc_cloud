@@ -6,7 +6,7 @@ spec:
   username: consumer
   authentication:
     type: password
-    password: Zm9vYmFy # <- foobar
+    password: "{{ enmasse_consumer_password }}"
   authorization:
   - addresses:  [ "telemetry/myapp.iot", "telemetry/myapp.iot/*", "event/myapp.iot", "event/myapp.iot/*" ]
     operations: [ "recv" ]

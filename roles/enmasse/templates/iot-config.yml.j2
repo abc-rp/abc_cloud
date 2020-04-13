@@ -23,7 +23,7 @@ spec:
         maxPayloadSize: 2048
       endpoint:
         secretNameStrategy:
-          secretName: iot-mqtt-adapter-tls
+          secretName: messaging-cert
     http:
       enabled: true
       replicas: 1
@@ -35,7 +35,7 @@ spec:
               cpu: 500m
       endpoint:
         secretNameStrategy:
-          secretName: iot-http-adapter-tls
+          secretName: messaging-cert
     lorawan:
       enabled: false
     sigfox:

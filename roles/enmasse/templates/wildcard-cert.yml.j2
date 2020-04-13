@@ -1,15 +1,24 @@
 ---
-apiVersion: cert-manager.io/v1alpha2
+apiVersion: cert-manager.io/v1alpha3
 kind: Certificate
 metadata:
-  name: wildcard-cert
+  name: messaging-cert
   namespace: enmasse-infra
 spec:
   dnsNames:
-    - {{ app_host }}
+    - "{{ app_host }}"
     - "*.{{ app_host }}"
-  secretName: wildcard-cert-tls
+  secretName: messaging-cert
   commonName: "*.{{ app_host }}"
   issuerRef:
     name: letsencrypt
     kind: ClusterIssuer
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: address-space-controller-config
+  namespace: enmasse-infra
+data:
+  wildcardEndpointCertSecret: "messaging-cert"
+  exposeEndpointsByDefault: "false"
