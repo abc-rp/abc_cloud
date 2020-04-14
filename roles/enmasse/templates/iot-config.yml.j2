@@ -18,21 +18,12 @@ spec:
     mqtt:
       enabled: true
       replicas: 1
-      options:
-        tenantIdleTimeout: 30m
-        maxPayloadSize: 2048
       endpoint:
         secretNameStrategy:
           secretName: messaging-cert
     http:
       enabled: true
       replicas: 1
-      containers:
-        adapter:
-          resources:
-            limits:
-              memory: 128Mi
-              cpu: 500m
       endpoint:
         secretNameStrategy:
           secretName: messaging-cert
