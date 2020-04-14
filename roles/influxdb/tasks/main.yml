@@ -65,8 +65,8 @@
   shell: "kubectl get pods -n {{ influxdb_namespace }} --selector='app=influxdb' -o jsonpath='{.items[*].status.containerStatuses[?(@.ready==true)].ready}' | wc -w"
   register: influxdb_result
   until: influxdb_result.stdout.find("1") != -1
-  retries: 90
-  delay: 5
+  retries: 50
+  delay: 10
 
 - name: Create InfluxDB devices database
   shell: |
