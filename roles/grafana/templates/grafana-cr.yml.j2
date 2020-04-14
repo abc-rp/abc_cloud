@@ -15,8 +15,8 @@ spec:
       mode: "console"
       level: "warn"
     security:
-      admin_user: "root"
-      admin_password: "secret"
+      admin_user: {{ grafana_admin_username }}
+      admin_password: {{ grafana_admin_password }}
     auth:
       disable_login_form: False
       disable_signout_menu: True
