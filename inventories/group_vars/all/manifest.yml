@@ -5,10 +5,10 @@ abc_cloud_version: master
 influxdb: True
 influxdb_version: "1.7.10"
 # swap from master to release version on first release
-influxdb_operator_release_tag: "master"
+influxdb_operator_release_tag: "06eb678"
 influxdb_operator_resources: "https://raw.githubusercontent.com/influxdata/influxdata-operator/{{ influxdb_operator_release_tag }}/deploy"
 # custom build for abc swap to official when released or set up CI/CD to auto build updates
-influxdb_operator_build_image: "gcr.io/sodium-apex-265111/influxdb-operator"
+influxdb_operator_build_image: "gcr.io/sodium-apex-265111/influxdb-operator:{{ influxdb_operator_release_tag }}"
 
 # grafana
 grafana: True
@@ -32,7 +32,7 @@ cert_manager_version: "v0.14.1"
 
 # lets encrypt (used by cert-manager)
 # use production or staging environment
-lets_encrypt_prod: False
+lets_encrypt_prod: True
 lets_encrypt_email: user@example.com
 # lets_encrypt_challenge: DNS01 # HTTP01 OR DNS01
 # lets_encrypt_dns_provider: route53
