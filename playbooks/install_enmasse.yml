@@ -3,3 +3,5 @@
   roles:
     - role: enmasse
       when: enmasse | default(true) | bool
+  vars:
+    enmasse_route_suffix: "{{ app_host }}"
