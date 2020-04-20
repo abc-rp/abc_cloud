@@ -1,9 +1,5 @@
 ---
 - hosts: localhost
-  vars_prompt:
-    - name: admin_password
-      prompt: "Enter desired admin password (basic authentication)"
-      unsafe: yes
   gather_facts: yes
   tasks:
     - include_role:
