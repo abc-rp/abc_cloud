@@ -25,6 +25,21 @@
     dest: /tmp
     remote_src: yes
 
+- name: Clean old certs
+  file:
+    state: "{{ item }}"
+    path: "/tmp/enmasse-{{ enmasse_version }}/install/components/iot/examples/k8s-tls/build"
+    mode: "0755"
+  with_items:
+    - absent
+    - directory
+
+- name: Create self-signed certificates for IoT services
+  shell: "/tmp/enmasse-{{ enmasse_version }}/install/components/iot/examples/k8s-tls/create"
+
+- name: Deploy self-signed certificates for IoT services
+  shell: "/tmp/enmasse-{{ enmasse_version }}/install/components/iot/examples/k8s-tls/deploy"
+
 - name: Create enmasse Resources
   shell: "kubectl create -f {{ item }} -n {{ enmasse_namespace }}"
   with_items: "{{ enmasse_operator_resource_items }}"
@@ -42,11 +57,11 @@
   failed_when: create_authservice_cmd.stderr != '' and 'AlreadyExists' not in create_authservice_cmd.stderr
   changed_when: create_authservice_cmd.rc == 0
 
-- name: Create self-signed certificates for IoT services
-  shell: "/tmp/enmasse-{{ enmasse_version }}/install/components/iot/examples/k8s-tls/create"
-
-- name: Deploy self-signed certificates for IoT services
-  shell: "/tmp/enmasse-{{ enmasse_version }}/install/components/iot/examples/k8s-tls/deploy"
+# - name: Create Grafana custom resource
+#   shell: kubectl create -f /tmp/enmasse-{{ enmasse_version }}/install/components/example-authservices/standard-authservice.yaml -n {{ enmasse_namespace }}
+#   register: create_authservice_cmd
+#   failed_when: create_authservice_cmd.stderr != '' and 'AlreadyExists' not in create_authservice_cmd.stderr
+#   changed_when: create_authservice_cmd.rc == 0
 
 - name: Generate IoT config
   template:
@@ -110,13 +125,13 @@
 - name: Apply external dns annotations for mqtt
   shell: kubectl annotate --overwrite service iot-mqtt-adapter-external external-dns.alpha.kubernetes.io/hostname="mqtt.{{ enmasse_route_suffix }}."
 
+# TODO: This can be set up when we create the iot project
+
 - name: Apply external dns annotations for amqp
   shell: kubectl annotate --overwrite service messaging-a9f2565-external external-dns.alpha.kubernetes.io/hostname="amqp.{{ enmasse_route_suffix }}."
 
 - name: Apply external dns annotations for wss
   shell: kubectl annotate --overwrite service messaging-wss-a9f2565-external external-dns.alpha.kubernetes.io/hostname="wss.{{ enmasse_route_suffix }}."
-
-# TODO: ampq can be set in the yaml files and has dynamic naming
 
 - name: Make sure we are using the project namespace
   shell: "kubectl config set-context --current --namespace={{ enmasse_default_project }}"
