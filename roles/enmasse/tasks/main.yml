@@ -19,17 +19,6 @@
   failed_when: create_wildcard_cert_resource_cmd.stderr != '' and 'AlreadyExists' not in create_wildcard_cert_resource_cmd.stderr
   changed_when: create_wildcard_cert_resource_cmd.rc == 0
 
-# - name: Copy DST Root CA X3
-#   copy:
-#     src: dst-root-ca-x3.pem
-#     dest: /tmp/dst-root-ca-x3.pem
-
-# - name: Install DST Root CA X3
-#   shell: kubectl create secret generic iot-service-ca --from-file=service-ca.crt=/tmp/dst-root-ca-x3.pem -n {{ enmasse_namespace }}
-#   register: create_root_ca_resource_cmd
-#   failed_when: create_root_ca_resource_cmd.stderr != '' and 'AlreadyExists' not in create_root_ca_resource_cmd.stderr
-#   changed_when: create_root_ca_resource_cmd.rc == 0
-
 - name: Download and unarchive enmasse release
   unarchive:
     src: "{{ enmasse_release_url }}"
