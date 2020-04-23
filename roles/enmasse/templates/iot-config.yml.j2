@@ -20,13 +20,13 @@ spec:
       replicas: 1
       endpoint:
         secretNameStrategy:
-          secretName: iot-mqtt-adapter-tls
+          secretName: messaging-cert
     http:
       enabled: true
       replicas: 1
       endpoint:
         secretNameStrategy:
-          secretName: iot-http-adapter-tls
+          secretName: messaging-cert
     lorawan:
       enabled: false
     sigfox:

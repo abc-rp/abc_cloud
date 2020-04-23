@@ -8,16 +8,16 @@
 - name: Make sure we are using the Enmasse namespace
   shell: "kubectl config set-context --current --namespace={{ enmasse_namespace }}"
 
-# - name: Generate wildcard certificate template
-#   template:
-#     src: "wildcard-cert.yml.j2"
-#     dest: /tmp/wildcard-cert.yml
+- name: Generate wildcard certificate template
+  template:
+    src: "wildcard-cert.yml.j2"
+    dest: /tmp/wildcard-cert.yml
 
-# - name: Create wildcard certificate resource
-#   shell: kubectl create -f /tmp/wildcard-cert.yml -n {{ enmasse_namespace }}
-#   register: create_wildcard_cert_resource_cmd
-#   failed_when: create_wildcard_cert_resource_cmd.stderr != '' and 'AlreadyExists' not in create_wildcard_cert_resource_cmd.stderr
-#   changed_when: create_wildcard_cert_resource_cmd.rc == 0
+- name: Create wildcard certificate resource
+  shell: kubectl create -f /tmp/wildcard-cert.yml -n {{ enmasse_namespace }}
+  register: create_wildcard_cert_resource_cmd
+  failed_when: create_wildcard_cert_resource_cmd.stderr != '' and 'AlreadyExists' not in create_wildcard_cert_resource_cmd.stderr
+  changed_when: create_wildcard_cert_resource_cmd.rc == 0
 
 - name: Download and unarchive enmasse release
   unarchive:
@@ -46,18 +46,18 @@
   register: create_enmasse_resource_cmd
   failed_when: create_enmasse_resource_cmd.stderr != '' and 'AlreadyExists' not in create_enmasse_resource_cmd.stderr
 
-- name: Generate low resource auth server (Keycloak)
+- name: Generate low resource authserver (Keycloak)
   template:
     src: "lowresources-authservice.yml.j2"
     dest: /tmp/lowresources-authservice.yml
 
-- name: Create low resource auth server
+- name: Create Grafana custom resource
   shell: kubectl create -f /tmp/lowresources-authservice.yml -n {{ enmasse_namespace }}
   register: create_authservice_cmd
   failed_when: create_authservice_cmd.stderr != '' and 'AlreadyExists' not in create_authservice_cmd.stderr
   changed_when: create_authservice_cmd.rc == 0
 
-# - name: Create example auth server
+# - name: Create Grafana custom resource
 #   shell: kubectl create -f /tmp/enmasse-{{ enmasse_version }}/install/components/example-authservices/standard-authservice.yaml -n {{ enmasse_namespace }}
 #   register: create_authservice_cmd
 #   failed_when: create_authservice_cmd.stderr != '' and 'AlreadyExists' not in create_authservice_cmd.stderr
