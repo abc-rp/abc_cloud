@@ -8,16 +8,16 @@
 - name: Make sure we are using the Enmasse namespace
   shell: "kubectl config set-context --current --namespace={{ enmasse_namespace }}"
 
-# - name: Generate wildcard certificate template
-#   template:
-#     src: "wildcard-cert.yml.j2"
-#     dest: /tmp/wildcard-cert.yml
+- name: Generate wildcard certificate template
+  template:
+    src: "wildcard-cert.yml.j2"
+    dest: /tmp/wildcard-cert.yml
 
-# - name: Create wildcard certificate resource
-#   shell: kubectl create -f /tmp/wildcard-cert.yml -n {{ enmasse_namespace }}
-#   register: create_wildcard_cert_resource_cmd
-#   failed_when: create_wildcard_cert_resource_cmd.stderr != '' and 'AlreadyExists' not in create_wildcard_cert_resource_cmd.stderr
-#   changed_when: create_wildcard_cert_resource_cmd.rc == 0
+- name: Create wildcard certificate resource
+  shell: kubectl create -f /tmp/wildcard-cert.yml -n {{ enmasse_namespace }}
+  register: create_wildcard_cert_resource_cmd
+  failed_when: create_wildcard_cert_resource_cmd.stderr != '' and 'AlreadyExists' not in create_wildcard_cert_resource_cmd.stderr
+  changed_when: create_wildcard_cert_resource_cmd.rc == 0
 
 - name: Download and unarchive enmasse release
   unarchive:

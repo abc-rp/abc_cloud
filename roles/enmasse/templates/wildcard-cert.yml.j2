@@ -13,12 +13,12 @@ spec:
   issuerRef:
     name: letsencrypt
     kind: ClusterIssuer
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: address-space-controller-config
-  namespace: enmasse-infra
+# ---
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: address-space-controller-config
+#   namespace: enmasse-infra
 # data:
 #   wildcardEndpointCertSecret: "messaging-cert"
 #   exposeEndpointsByDefault: "false"
