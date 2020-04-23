@@ -6,7 +6,8 @@ spec:
   username: consumer
   authentication:
     type: password
-    password: {{ enmasse_consumer_password }}
+    # echo -n foobar | base64
+    password: {{ enmasse_consumer_password | b64encode }}
   authorization:
   - addresses:  [ "telemetry/myapp.iot", "telemetry/myapp.iot/*", "event/myapp.iot", "event/myapp.iot/*" ]
     operations: [ "recv" ]
