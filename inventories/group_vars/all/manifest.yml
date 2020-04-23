@@ -42,7 +42,7 @@ external_dns: True
 
 # enmasse
 enmasse: True
-enmasse_version: '0.31.0'
+enmasse_version: '0.31.1'
 enmasse_release_url: https://github.com/EnMasseProject/enmasse/releases/download/{{ enmasse_version }}/enmasse-{{ enmasse_version }}.tgz
 enmasse_default_project: myapp
 # enmasse_postgresql_image: 'postgresql:9.6'
