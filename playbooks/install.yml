@@ -7,4 +7,3 @@
 # - import_playbook: "./install_hono.yml"
 - import_playbook: "./install_enmasse.yml"
 - import_playbook: "./install_connector.yml"
-# - import_playbook: "./user.yaml"
