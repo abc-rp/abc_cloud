@@ -40,6 +40,32 @@
 - name: Deploy self-signed certificates for IoT services
   shell: "/tmp/enmasse-{{ enmasse_version }}/install/components/iot/examples/k8s-tls/deploy"
 
+# - name: Copy DST Root CA X3
+#   copy:
+#     src: dst-root-ca-x3.pem
+#     dest: /tmp/dst-root-ca-x3.pem
+#   when: lets_encrypt_prod
+
+# - name: Install DST Root CA X3
+#   shell: kubectl create secret generic iot-service-ca --from-file=service-ca.crt=/tmp/dst-root-ca-x3.pem -n {{ enmasse_namespace }}
+#   register: create_root_ca_resource_cmd
+#   failed_when: create_root_ca_resource_cmd.stderr != '' and 'AlreadyExists' not in create_root_ca_resource_cmd.stderr
+#   changed_when: create_root_ca_resource_cmd.rc == 0
+#   when: lets_encrypt_prod
+
+# - name: Copy Fake LE Root X1
+#   copy:
+#     src: fake-le-root-x1.pem
+#     dest: /tmp/fake-le-root-x1.pem
+#   when: not lets_encrypt_prod
+
+# - name: Install Fake LE Root X1
+#   shell: kubectl create secret generic iot-service-ca --from-file=service-ca.crt=/tmp/fake-le-root-x1.pem -n {{ enmasse_namespace }}
+#   register: create_root_ca_resource_cmd
+#   failed_when: create_root_ca_resource_cmd.stderr != '' and 'AlreadyExists' not in create_root_ca_resource_cmd.stderr
+#   changed_when: create_root_ca_resource_cmd.rc == 0
+#   when: not lets_encrypt_prod
+
 - name: Create enmasse Resources
   shell: "kubectl create -f {{ item }} -n {{ enmasse_namespace }}"
   with_items: "{{ enmasse_operator_resource_items }}"
