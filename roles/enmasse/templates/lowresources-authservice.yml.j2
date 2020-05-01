@@ -8,10 +8,9 @@ spec:
     # storage:
     #   type: persistent-claim
     #   size: 1Gi
-    jvmOptions: -Xms768m -Xmx768m -XX:MaxMetaspaceSize=250m -XX:MetaspaceSize=250m
-    # jvmOptions: -Xms64m -Xmx512m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m
+    jvmOptions: -Xms1024M -Xmx1024M -XX:MetaspaceSize=512M -XX:MaxMetaspaceSize=1024M
     resources:
       requests:
-        memory: 768Mi
+        memory: 1Gi
       limits:
-        memory: 768Mi
+        memory: 1Gi
