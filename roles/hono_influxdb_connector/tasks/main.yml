@@ -10,11 +10,11 @@
 
 - name: Copy trust store certificate to host
   copy:
-    src: trusted-certs.pem
-    dest: /tmp/trusted-certs.pem
+    src: tls.crt
+    dest: /tmp/tls.crt
 
 - name: Create configuration secret
-  shell: kubectl create secret generic hono-influxdb-connector-conf --from-file=trusted-certs.pem=/tmp/trusted-certs.pem --namespace {{ connector_namespace }}
+  shell: kubectl create secret generic hono-influxdb-connector-conf --from-file=trusted-certs.pem=/tmp/tls.crt --namespace {{ connector_namespace }}
   register: create_connector_secret_cmd
   failed_when: create_connector_secret_cmd.stderr != '' and 'AlreadyExists' not in create_connector_secret_cmd.stderr
   changed_when: create_connector_secret_cmd.rc == 0
