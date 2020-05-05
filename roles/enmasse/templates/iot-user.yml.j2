@@ -3,7 +3,7 @@ apiVersion: user.enmasse.io/v1beta1
 metadata:
   name: iot.consumer
 spec:
-  username: consumer
+  username: {{ enmasse_default_username }}
   authentication:
     type: password
     # echo -n foobar | base64
