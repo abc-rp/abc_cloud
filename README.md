@@ -14,6 +14,8 @@ These include:
 
 We are initially targeting Google Kubernetes Engine (GKE) and K3S with the ambition of being disto agnostic.
 
+## Documentation
+
 For design documentation and guides please visit the [project wiki](https://github.com/active-building-centre/installation/wiki).
 
 Component diagram:
