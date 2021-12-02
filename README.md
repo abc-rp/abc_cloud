@@ -2,7 +2,7 @@
 
 **ABC Cloud Installer**
 
-> Note: This repo is a WIP and is not intended for production use.
+> Note: This repo is archived.  Our focus is now supporting the development of [Drogue IoT]https://www.drogue.io/.
 
 
 The purpose of this repository is to provide a set of playbooks that can be used to configure and install a range of ABC Cloud components via Ansible on Kubernetes (k8s).
